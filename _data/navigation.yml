@@ -1,0 +1,31 @@
+main:
+  - title: "Projects"
+    url: /projects/
+  - title: "Posts"
+    url: /posts/
+  - title: "About"
+    url: /about/
+
+project_fightstick_sidebar:
+  - title: "Project Documentation"
+    children:
+      - title: "Project Introduction"
+        url: /FightStick/introduction-to-the-project/
+      - title: "Dinput VS Xinput"
+        url: /FightStick/dinput-vs-xinput/
+      - title: "The XBOX 360 Controller"
+        url: /FightStick/xbox360-controller/
+      - title: "Wiring up the TeensyLC"
+        url: /FightStick/wiring-up-teensylc/
+      - title: "Adding Xinput USB Type to Teensyduino Menu"
+        url: /FightStick/adding-xinput-to-usb-menu/
+      - title: "Defining the XINPUT USB Device"
+        url: /FightStick/defining-the-xinput-device/
+      - title: "The CODE"
+        url: /FightStick/the-code/
+      - title: "Project Wrap Up"
+        url: /FightStick/project-wrapup/
+  - title: "Updates/Other Additions"
+    children:
+      - title: "Creating an Xinput Library"
+        url: /FightStick/xinput-library-for-teensyduino/

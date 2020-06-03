@@ -1,9 +1,19 @@
 ---
-layout: post
 title:  "The XBOX 360 Controller"
-categories: FightStick
+categories:
+  - FightStick
+tags:
+  - xinput
+  - fightstick
+  - Xbox360 Controller
+
+author_profile: false
+
+sidebar:
+  title: "FightStick Project"
+  nav: project_fightstick_sidebar
 ---
-![Message Analyzer](/assets/fightstick/Message-Analyzer.jpg)
+![Message Analyzer](/assets/images/fightstick/Message-Analyzer.jpg)  
 
 With the need for drivers, there was no way to roll my own solution. Asking everyone to put their 64-bit version of windows into test mode just to use this controller seemed a little insane. My only real option at this point was to imitate something that existed. It most likely would have been easier to reproduce a more simple PC only controller (ie the F310). The PC only controllers have a lot less interfaces and endpoints, but I already had 360 controllers and did not feel like buying anything new.
 
@@ -40,15 +50,15 @@ The configuration descriptor first tells the PC it is a configuration type descr
 
 The next thing that we need to look at, is the way the controller sends button reports to the host. Once again, Free60 is on top of things with this. However, pay close attention to the indexes provided. The standard bit format of a byte goes: bit 7, bit 6, bit 5, bit 4, bit 3, bit 2, bit 1, and bit 0. Remember this is sent from the device to the host on endpoint 1 in a 20 byte packet. Below is the button report broken down:
 
-[Button Report PDF](/assets/fightstick/button-report.pdf)
+[Button Report PDF](/assets/pdfs/fightstick/button-report.pdf)
 
 As you write your code, you may wonder what the button names correlate to on an XBOX 360 controller. Here is a table to help you with that:
 
-[Button to XBOX Conversion PDF](/assets/fightstick/Button-to-XBOX-conversion.pdf)
+[Button to XBOX Conversion PDF](/assets/pdfs/fightstick/Button-to-XBOX-conversion.pdf)
 
 The last endpoint we really care about is endpoint 2 out. This comes into the device from the PC and contains messages. The only message we care about is message type 0x01, which is LED control. The packet will come in 3 bytes with byte 1 being message type and byte 2 as the length. The 3rd byte contains the pattern to be performed. Below are the different patterns that the controller can produce:
 
-[LED Report PDF](/assets/fightstick/LED-Report.pdf)
+[LED Report PDF](/assets/pdfs/fightstick/LED-Report.pdf)
 
 [brandonW-page]: http://brandonw.net/360bridge/
 [free60-page]: http://free60.org/wiki/GamePad

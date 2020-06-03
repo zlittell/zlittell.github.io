@@ -1,7 +1,17 @@
 ---
-layout: post
 title:  "Creating an Xinput Library for Teensyduino"
-categories: Xinput
+categories:
+  - Fightstick
+tags:
+  - xinput
+  - library
+  - github
+
+author_profile: false
+
+sidebar:
+  title: "FightStick Project"
+  nav: project_fightstick_sidebar
 ---
 Recently Jeremy Williams from Tested! has been working on his very own
 controller. This one emulated another classic arcade giant, the pinball machine.

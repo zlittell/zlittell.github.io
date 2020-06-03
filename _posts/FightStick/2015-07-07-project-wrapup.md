@@ -1,7 +1,17 @@
 ---
-layout: post
 title:  "Wrapping it all up!"
-categories: FightStick
+categories:
+  - FightStick
+tags:
+  - xinput
+  - fightstick
+  - Wrap Up
+
+author_profile: false
+
+sidebar:
+  title: "FightStick Project"
+  nav: project_fightstick_sidebar
 ---
 We finally did it! We have created a custom USB device on the TeensyLC and allowed it to send the packets expected from a X360 controller. We even went as far as to allow it to receive LED commands from the host. This writeup became much longer than expected rather quickly. It also can be a bit dry at times, I admit that. That is partially the reason the writeup took so long to complete. I really wanted to go over everything as much as possible and then allow the reader the ability to skip what they deemed unnecessary. I figured the first few sections would be most useful for the advanced readers since they discuss more of how the controllers work and creating the non standard HID device. I didn’t want to leave any newcomers in the dust during this write up either. Since this project crosses two hobbies, there is a chance that people who have little or no experience with embedded development will end up here because of the fightstick aspect.
 

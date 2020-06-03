@@ -1,12 +1,22 @@
 ---
-layout: post
 title:  "Defining the Xinput USB Device"
-categories: FightStick
+categories:
+  - FightStick
+tags:
+  - xinput
+  - fightstick
+  - USB device
+
+author_profile: false
+
+sidebar:
+  title: "FightStick Project"
+  nav: project_fightstick_sidebar
 ---
-![USB_Icon](/assets/USB_Icon.png)  
+![USB_Icon](/assets/images/USB_Icon.png)  
 Teensyduino is set up to define USB devices through the usb_desc.h file. So we are going to want to add the following code to this file:
 
-![usb_desc_h_1](/assets/fightstick/usb_desc_h_1.jpg)
+![usb_desc_h_1](/assets/images/fightstick/usb_desc_h_1.jpg)  
 
 [comment]: # (USB Descriptor Header Snippet)
 ```c
@@ -45,7 +55,7 @@ I placed these defines after USB_FLIGHTSIM and before the closing #endif. It doe
 
 The next step in creating this USB device is to write code for telling the host what type of device this is. The standard chain of events that we will see is the host will ask for the device descriptor and read it back until it grabs the length. Once it gets the length it will ask for the device descriptor again, but this time it will ask for the full descriptor specifying the length. It will then determine what configuration is needed (there is only one on this device) and ask for that configuration descriptor. We need to set up these two descriptors and the array of responses to queries from the host. This is done in the USB USB_DESC.c file. Since this file is set up for HID devices, the device descriptor is actually extremely generic. First we will go to where device_descriptor[] is defined and add the following lines:
 
-![usb_desc_c_1](/assets/fightstick/usb_desc_c_1.jpg)
+![usb_desc_c_1](/assets/images/fightstick/usb_desc_c_1.jpg)  
 
 [comment]: # (Device Descriptor Code Snippet)
 ```c
@@ -87,7 +97,7 @@ static uint8_t device_descriptor[] = {
 
 Normally the device has no need to specify a device version, however, the X360 does have a specific device version and this is the best way to include it without breaking support for other devices. The next part that we need to change is the configuration descriptor. The first thing we need to add to the configuration descriptor is the ability to define device attributes and device power, like so:
 
-![usb_desc_c_2](/assets/fightstick/usb_desc_c_2.jpg)
+![usb_desc_c_2](/assets/images/fightstick/usb_desc_c_2.jpg)  
 
 [comment]: # (USB Descriptor Code Snippet)
 ```c
@@ -105,9 +115,9 @@ Normally the device has no need to specify a device version, however, the X360 d
 
 Once we add in device attributes and power, we need to tell the compiler to include our controller descriptor when XINPUT_INTERFACE is defined. This configuration descriptor is gathered directly from the controller. It must match for the driver to work correctly. This tells the host about all the interfaces and endpoints that make up the device. I put comments on each line of the descriptor so that you can follow along and understand what each line means. Now we are going to add the following lines to config_descriptor[].
 
-![usb_desc_c_3_1](/assets/fightstick/usb_desc_c_3_1.jpg)
-![usb_desc_c_3_2](/assets/fightstick/usb_desc_c_3_2.jpg)
-![usb_desc_c_3_3](/assets/fightstick/usb_desc_c_3_3.jpg)
+![usb_desc_c_3_1](/assets/images/fightstick/usb_desc_c_3_1.jpg)  
+![usb_desc_c_3_2](/assets/images/fightstick/usb_desc_c_3_2.jpg)  
+![usb_desc_c_3_3](/assets/images/fightstick/usb_desc_c_3_3.jpg)  
 
 [comment]: # (Xinput Interface Descriptor Definition Snippet)
 ```c
@@ -216,7 +226,7 @@ Once we add in device attributes and power, we need to tell the compiler to incl
 
 You will notice that the iInterface value for interface 3 states a value of 4. This means that string 4 contains a descriptor for this interface. This is the security interface used to handshake with an actual XBOX 360. We really do not need this, however, anyone that might try a man in the middle style device will need this. The 360 will cease communication with the device if this string is not returned. So we define a structure of type usb_string_descriptor_struct and fill it with the correct string.
 
-![usb_desc_c_4](/assets/fightstick/usb_desc_c_4.jpg)
+![usb_desc_c_4](/assets/images/fightstick/usb_desc_c_4.jpg)  
 
 [comment]: # (Microsoft Descriptor Security String Snippet)
 ```c
@@ -238,7 +248,7 @@ struct usb_string_descriptor_struct usb_string_xinput_security_descriptor = {
 
 Finally we need to add the command used to ask for this string and specify a response in the usb_descriptor_list[] array. The host will send a request for 0x0304. The 0x03 portion indicates the host wants a string. The 0x04 is the index, which as you remember, is the index we specified as interface 3’s iInterface. We then tell the device to return security descriptor string we just set up.
 
-![usb_desc_c_5](/assets/fightstick/usb_desc_c_5.jpg)
+![usb_desc_c_5](/assets/images/fightstick/usb_desc_c_5.jpg)  
 
 [comment]: # (Define Descriptor string for interface snippet)
 ```c
