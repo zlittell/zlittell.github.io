@@ -13,8 +13,8 @@ sidebar:
   title: "FightStick Project"
   nav: project_fightstick_sidebar
 ---
-![USB_Icon](/assets/images/USB_Icon.png)  
-Teensyduino is set up to define USB devices through the usb_desc.h file. So we are going to want to add the following code to this file:
+![USB_Icon](/assets/images/usb_icon.png)  
+Teensyduino is set up to define USB devices through the usb_desc.h file. So we arae going to want to add the following code to this file:
 
 ![usb_desc_h_1](/assets/images/fightstick/usb_desc_h_1.jpg)  
 

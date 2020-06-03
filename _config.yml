@@ -41,6 +41,7 @@ plugins:
 
 include:
   - _pages
+
 author:
   name   : "Zack Littell"
   avatar : "/assets/images/bio-photo.jpg"

@@ -13,7 +13,7 @@ sidebar:
   title: "FightStick Project"
   nav: project_fightstick_sidebar
 ---
-![Project Introduction](/assets/images/fightstick/Collage-2015-05-01-20_00_26.jpg){: width="400px"}      
+![Project Introduction](/assets/images/fightstick/collage-2015-05-01-20_00_26.jpg){: width="400px"}      
 
 The idea for this project came up when discussing the release of Mortal Kombat X. The guys at Mechanical Squid Factory (our gaming group) decided they wanted to branch out into the competitive fighting game scene. We started doing research into fighting games and that brought us to a forum called Shoryuken. The realization that a regular gamepad might not provide the best experience quickly set in. We decided that a fight stick would be just too expensive and thought keyboard would work out. The entire team played through the story of MKX and thought our fingers would never function again after contorting them to the keyboard. Soon enough we couldn’t take it anymore and pieced together fight sticks. Most of our parts were ordered from FocusAttack and the cases from Art at Tek-Innovations. As you can tell, the cases are laser cut by Art and they do have a 2 week turn around time. However, they really are beautiful when assembled. We then opted for a DIY solution to a controller board. This could save us $40-$50 since we only planned on using these on the PC anyways.
 

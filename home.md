@@ -8,7 +8,7 @@ header:
   overlay_image: /assets/images/workbench-banner.jpg
   actions:
     - label: "Resume"
-      url: /assets/pdfs/ZackLittellResume_Cleansed.pdf
+      url: /assets/pdfs/zacklittellresume_cleansed.pdf
 excerpt: 'Welcome to my workbench where I post about projects I am working on and topics I am learning about.'
 #intro: 
   #- excerpt: "This appears below the image"
