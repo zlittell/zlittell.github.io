@@ -19,7 +19,7 @@ This was where the project took an evil turn. It took all of 15 minutes to load 
 
 This is my first arduino IDE project and I was absolutely lost. The great thing about the internet was that someone was there to help me out. I found that help from [Kenton Hamaluik][hamaluik-site]‘s project where he makes a teensy joystick for his wedding arcade. Reading his post showed me that we needed to add a menu item that when selected defined a statement that we would continue to check for to include code. The first step is to edit the file boards.txt, which is located in the sub-folder hardware\teensy\avr\ of your arduino installation.
 
-![Boards_1 Code](/assets/images/fightstick/Boards_1.jpg)  
+![Boards_1 Code](/assets/images/fightstick/boards_1.jpg)  
 
 [comment]: # (USB Menu options)
 ```c
