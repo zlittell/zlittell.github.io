@@ -18,7 +18,7 @@ feature_row:
     alt: "My Headshot Image"
     title: "Zack Littell"
     excerpt: 
-        'I am a Electronics Design Engineer with 3+ years of experience.  I also have 5+ years of experience as a Process Control Engineer.
+        'I am an electrical engineer with experience in product design and process control.
         Building and developing products, working with others to create requirements and build products, is one of my favorite experiences.'
     url: "about"
     btn_label: "Read More"
