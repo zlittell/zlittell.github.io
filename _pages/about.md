@@ -20,5 +20,5 @@ I hope to continue my career developing products that include electronics and be
   <a href="http://www.microchip.com">
   <img src="{{ site.url }}{{ site.baseurl }}/assets/images/PartnerLogo_Web-authorized.png">
   </a>
-  <figcaption>Specializes in designing with Microchip products. Visit the Microchip Technology web site for more information by clicking here.</figcaption>
+  <figcaption>Littell Technologies LLC specializes in designing with Microchip products. Visit the Microchip Technology web site for more information by clicking here.</figcaption>
 </figure>

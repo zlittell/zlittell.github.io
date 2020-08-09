@@ -55,5 +55,5 @@ I have developed and managed products through many different stages. I enjoy lea
   <a href="http://www.microchip.com">
   <img src="{{ site.url }}{{ site.baseurl }}/assets/images/PartnerLogo_Web-authorized.png">
   </a>
-  <figcaption>Specializes in designing with Microchip products. Visit the Microchip Technology web site for more information by clicking here.</figcaption>
+  <figcaption>Littell Technologies LLC specializes in designing with Microchip products. Visit the Microchip Technology web site for more information by clicking here.</figcaption>
 </figure>
