@@ -13,3 +13,12 @@ I am a professional electronics design engineer. The product development process
 * Prototype assembly (by hand and by oven)
 
 I hope to continue my career developing products that include electronics and being part of teams that are changing the markets they work in.
+
+---
+
+<figure class="align-left" style="width: 150px; font-size: 14px">
+  <a href="http://www.microchip.com">
+  <img src="{{ site.url }}{{ site.baseurl }}/assets/images/PartnerLogo_Web-authorized.png">
+  </a>
+  <figcaption>Specializes in designing with Microchip products. Visit the Microchip Technology web site for more information by clicking here.</figcaption>
+</figure>
