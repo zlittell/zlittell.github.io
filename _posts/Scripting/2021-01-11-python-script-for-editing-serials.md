@@ -67,14 +67,20 @@ const char __attribute__ ((section (".serialNumberSection"))) DeviceSerialNumber
 };
 ```
 This simple bit of code creates a const char array DeviceSerialNumber of "0123456789" and stores it at the serialNumberSection we created previously.
-
-With all of this done, when we compile we get this very interesting section towards the end of our hex file:
+###### Understanding the Hex File
+With all of this done, we can compile our code and we get this very interesting section towards the end of our hex file:
 `:0A3EF40030313233343536373839B7`
+<br />
+Lines in an intel hex file are quite easy to read. They begin with a start code which is a single colon character (":"). Then two hexadecimal characters describe a byte that represents the length of just the data in this line, we will come back to this. The next four characters describe the two bytes that represent the location in memory for this line of data. These hex characters should look familiar because 0x3EF4 is the origin we specified in our linker for the serial number to exist at. Following the address bytes is a byte that describes the type of information on this line. Here we see 00 (0x00) which tells us that this line has DATA on it. You should also recognize the next 10 bytes (0x30313233343536373839) as the ASCII representation of our serial 0123456789. If you don't know exactly how characters are converted to ASCII, you can see a table [here][ascii-table]. Finally there are two characters to represent the checksum byte. This is an 8 bit checksum, where we add up all bytes then take the 2's complement. If you are unfamiliar with 2's complement, you will take the 8 bit value and invert it (this is 1's complement) then add 1 to the sum. This gives us a byte that when added to all the other bytes creates a byte sum of 0. In this example (0x0A + 0x3E + 0xF4 + 0x00 + 0x30 + 0x31 + 0x32 + 0x33 + 0x34 + 0x35 + 0x36 + 0x37 + 0x38 + 0x39 + 0xB7 = 0x400) and we only care about the single byte nothing that overflows from there (0x400 & 0xFF = 0x00).
 
-@TODO START EXPLAINING HOW INTEL HEX LINES ARE CONSTRUCTED
+While this gives you the basics or reading a simple line like this in a hex file there are more complexities to them and if you want to get a broader understanding you can start [here][intelhex-explained].
 
-###### BEGINNING SCRIPT
+###### BEGINNING OUR SCRIPT
+The main purpose of this script is to locate a specific line in the hex file based on its memory address and then replace it with a generated valid line. This means that we need to be able to open/copy/save files as well as parse the files for text content, convert strings to ascii, and calculate checksums. When I started this script I really just focused on base tasks and built from there. How do I open a file and then save it? How do I scan through the file and how do I search the lines for specific text? And many more as I continued to create a script that did what I needed to. Starting at the simplest place and building logically is a great way to build large projects. I don't really need to take in arguments from the command line until I am closer to the end and focusing on it too early could actually cause me to have to rework more code than I should have to later on.
+
 
 [serialhexedit-codebase]: https://github.com/zlittell/MSF.SerialHEXEdit
 [macro9pad-linkerfile]: https://github.com/zlittell/Macro9PadFW/blob/master/src/startup/samd11d14am_flash.ld
 [m9p-serialnumberdotc]: https://github.com/zlittell/Macro9PadFW/blob/master/src/serialnumber.c
+[ascii-table]: http://www.asciitable.com/
+[intelhex-explained]: https://www.kanda.com/blog/microcontrollers/intel-hex-files-explained/
