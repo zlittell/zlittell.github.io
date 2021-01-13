@@ -78,6 +78,114 @@ While this gives you the basics or reading a simple line like this in a hex file
 ###### BEGINNING OUR SCRIPT
 The main purpose of this script is to locate a specific line in the hex file based on its memory address and then replace it with a generated valid line. This means that we need to be able to open/copy/save files as well as parse the files for text content, convert strings to ascii, and calculate checksums. When I started this script I really just focused on base tasks and built from there. How do I open a file and then save it? How do I scan through the file and how do I search the lines for specific text? And many more as I continued to create a script that did what I needed to. Starting at the simplest place and building logically is a great way to build large projects. I don't really need to take in arguments from the command line until I am closer to the end and focusing on it too early could actually cause me to have to rework more code than I should have to later on.
 
+So lets place this [hex file](/assets/files/serial-example.hex) into a folder for us to work in. Then we can create a file serialTest.py in the same folder. Lets put some really simple code in this file to simply open our serial-example.hex and print the first line.
+```python
+with open("serial-example.hex", 'r') as inputWriter:
+    print(inputWriter.readline())
+```
+these two simple lines will open our hex file with read-only ('r') attribute. This uses pythons 'with' block to have exception catching if we want. This simple script will print the first line of our hex file to the console:
+`:10000000480800202901000025010000250100000A`
+
+The next big step is to take our input hex file and copy every line to a new hex file that we will name "output.hex". All this takes is 3 simple lines of code under our previous withblock:
+```python
+with open("serial-example.hex", 'r') as inputWriter:
+    with open("output.hex", 'w') as outputWriter:
+        for line in inputWriter:
+            outputWriter.write(line)
+```
+This opens the input file with the readonly flag and then opens the output file with the write only flag (creating the file if it doesn't exist already). Finally the last couple lines say that for every line in the input file, write that line to the output file. Now the next simple task is to locate our memory location 0x3EF4 and for now we can just replace it with a simple line "INSERTHERE". Python makes looking for substrings in strings easy using the "in" keyword. So lets replace our "for line" code with the following:
+```python
+for line in inputWriter:
+            if "3EF4" in line:
+                outputWriter.write("INSERTHERE\n")
+            else:
+                outputWriter.write(line)
+```
+Now if we open output.hex we can scroll to the bottom and clearly see where the `:0A3EF40030313233343536373839B7` line is replaced with "INSERTHERE".
+
+Next we are going to take a hardcoded serial string and turn that into a valid intel hex line to insert instead of the original serial line. We will work with a hardcoded `serialString = "0123443210"` and convert it to string of ascii bytes to use. The only really complicated part of this step is going to be creating the checksum. Remember we need a byte that when summed to along with every byte in the string overflows to a perfect 0x00. The easiest way to start is to combine the ascii serial bytes with what needs to exist at the beginning of the string (data length, memory location, and type). Then we will use a library called wrap that we can import from textwrap. This will allow us to wrap this single string every 2 characters giving us an array of bytes described with two hex characters. We can convert each hex byte of the array to integers and add them all together using this sum to calculate the checksum value. We will convert that checksum value to a string of 2 digit hex characters. Finally using the string we originally constructed before wrapping, we will prepend a colon (":") and append the checksum. This whole process will create a new valid line for our hex file that looks like this `:0A3EF40030313233343433323130D0`. We will use this line instead when we locate the serial line in our hex file. Our script at this point should look something like this:
+```python
+from textwrap import wrap
+
+# Hardcoded serial number string
+serialNumber = "0123443210"
+
+# Convert to ascii hex and create new line for hex file
+serialString = bytes(serialNumber, 'ascii').hex()
+replacementLine = "0A" + "3EF4" + "00" + serialString
+
+# Calculate checksum and finish new line
+wrappedBytes = wrap(replacementLine, 2)
+sumValue = 0;
+for value in wrappedBytes:
+    sumValue += int(value,16)
+checksumValue = (-(sumValue % 256) & 0xFF)
+replacementLine += str.format('{:02X}', checksumValue)
+replacementLine = ":" + replacementLine + "\n"
+
+# Copy input file to output file, overwriting serial line
+with open("serial-example.hex", 'r') as inputWriter:
+    with open("output.hex", 'w') as outputWriter:
+        for line in inputWriter:
+            if "3EF4" in line:
+                outputWriter.write(replacementLine)
+            else:
+                outputWriter.write(line)
+```
+
+So now we really have something going with our script. If you are confused on what anything is doing you can debug the script or just start adding in print() commands in different places in order to understand the flow. The last thing we really have to accomplish is to take in command line arguments because we aren't going to want to use the same hardcoded serial number every time. We are going to import getopt for accepting commandline arguments into our script. For the sake of simplicity I am only going to write code for an argument to accept a serial number passed in. That will create a script that you can change a couple things in for each project and then call with a provided serial number and output your program hex file. If you want to expand on that visit this projects github and look at the python script there. It has many arguments to specify input hex, output hex, serial number, incrementable serial file, and memory location. We will use "-s --serial" as the short and long form of our serial argument. We will check if the serial argument is passed, verify it's length, then use it with the above code to create a replacement line in our hex file. We are just going to remove our hardcoded serial string and then add a little bit of code to the beginning of our script, in order to get that our starting string from user input. The whole script should now look like this:
+```python
+import sys
+import getopt
+from textwrap import wrap
+
+# Set up initial variable values
+serialNumber = ""
+
+# Set up possible arguments
+short_options = "s:"
+long_option = ["serial"]
+full_cmd_arguments = sys.argv
+argument_list = full_cmd_arguments[1:]
+arguments, values = getopt.getopt(argument_list, short_options, long_option)
+
+# Parse arguments
+for current_argument, current_value in arguments:
+    if (current_argument) in ("-s", "--serial"):
+        serialNumber = current_value
+
+# Validate arguments
+if (serialNumber ==""):
+    sys.exit("Must pass serial number argument.")
+if (len(serialNumber)!=10):
+    sys.exit("Serial must be 10 characters.")
+
+# Convert to ascii hex and create new line for hex file
+serialString = bytes(serialNumber, 'ascii').hex()
+replacementLine = "0A" + "3EF4" + "00" + serialString
+
+# Calculate checksum and finish new line
+wrappedBytes = wrap(replacementLine, 2)
+sumValue = 0;
+for value in wrappedBytes:
+    sumValue += int(value,16)
+checksumValue = (-(sumValue % 256) & 0xFF)
+replacementLine += str.format('{:02X}', checksumValue)
+replacementLine = ":" + replacementLine + "\n"
+
+# Copy input file to output file, overwriting serial line
+with open("serial-example.hex", 'r') as inputWriter:
+    with open("output.hex", 'w') as outputWriter:
+        for line in inputWriter:
+            if "3EF4" in line:
+                outputWriter.write(replacementLine)
+            else:
+                outputWriter.write(line)
+```
+When you run the script with `python3 serialTest.py` you will now get `Must pass serial number argument.` as an output. If we try something like `python3 serialTest.py -s 1243` we will get an output of `Serial must be 10 characters.` on the terminal. Finally if we enter `python3 serialTest.py -s 1233211230` our script will complete without error and when we open our hex file we see our 0x3ef4 memory line changed to `:0A3EF40031323333323131323330D2`.
+
+###### CONCLUSION
+This is the simplest form of this script or what I would consider a least viable product. You could then call this script from other scripts that track serial numbers. Maybe assembly workers will scan barcodes, qr codes, or manually enter data that is stored in a database when they create this serial and program your device. You could then tie the serial in this database to customers when they purchase a device and shipping sends out an invoiced item. Many different solutions are possible and they can be anything under the sun really. This is why the full blown script even has a mode where it just tracks the last used serial in a file and increments it. Automation scripting allows you to streamline your production process whether you are 1 person at your home or an engineer at a company with many employees. The oppurtunities are endless!
 
 [serialhexedit-codebase]: https://github.com/zlittell/MSF.SerialHEXEdit
 [macro9pad-linkerfile]: https://github.com/zlittell/Macro9PadFW/blob/master/src/startup/samd11d14am_flash.ld
